@@ -8,6 +8,7 @@ try:
     def get_db():
         if "db" not in g:
             client = MongoClient(app.config["MONGO_URI"])
+            print(f"Setting, 'client' {client} ")
             g.db = client["flask-basic"]
         return g.db
 
@@ -18,12 +19,6 @@ try:
         for collection in collections:
             if collection not in db.list_collection_names():
                 db.create_collection(collection)
-
-    @app.teardown_appcontext
-    def close_db(e=None):
-        db = g.pop("db", None)
-        if db is not None:
-            db.client.close()
 
 except Exception as e:
     print(f"Error in 'database' Exception: {e}")
