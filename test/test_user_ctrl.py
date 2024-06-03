@@ -14,6 +14,7 @@ def test_create_user(client):
     assert response.status_code == 200
     response_data = response.get_json()
     assert response_data["message"] == "User added successfully"
+    client.delete(f"/user/delete/{data['username']}")
 
 
 def test_get_users(client):
@@ -25,20 +26,21 @@ def test_get_users(client):
 
 def test_update_user(client):
     username = "existing_user"
-    new_data = {"username": username, "email": fake.email()}
+    data = {"username": username, "email": fake.email()}
     Users(username=username, email="test@example.com").save()
 
     response = client.put(
         f"/user/update/{username}",
-        data=json.dumps(new_data),
+        data=json.dumps(data),
         content_type="application/json",
     )
     assert response.status_code == 200 or response.status_code == 404
     if response.status_code == 200:
         response_data = response.get_json()
         assert response_data[0]["message"] == "User update successfully"
-        assert response_data[1]["username"] == new_data["username"]
-        assert response_data[1]["email"] == new_data["email"]
+        assert response_data[1]["username"] == data["username"]
+        assert response_data[1]["email"] == data["email"]
+    client.delete(f"/user/delete/{data['username']}")
 
 
 def test_delete_user(client):
