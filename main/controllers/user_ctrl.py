@@ -58,7 +58,7 @@ class UsersCtrl:
 
     @staticmethod
     @bp.route("/retrieve/<username>", methods=["GET"])
-    def get_user_by_id(username):
+    def get_user_by_username(username):
         try:
             user = Users.get_one(username)
             if user:

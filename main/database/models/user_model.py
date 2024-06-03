@@ -1,6 +1,5 @@
 from main.database.database import get_db
 
-
 class Users:
     def __init__(self, username, email):
         self.username = str(username)

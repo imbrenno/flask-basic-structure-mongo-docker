@@ -1,20 +1,19 @@
 # Usar uma imagem base do Python
-FROM python:3
+FROM python:3.11.7
 
-# Configurar o diretório de trabalho
-WORKDIR /
+ENV PYTHONPATH=/app
 
-# Copiar os arquivos de requisitos e instalar as dependências
+WORKDIR /app
+
 COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copiar o restante da aplicação
 COPY . .
 
 COPY .env .env
 
-# Expor a porta que a aplicação Flask irá rodar
+ENV FLASK_APP=run.py
+
 EXPOSE 5000
 
-# Comando para rodar a aplicação
 CMD ["python", "run.py"]
